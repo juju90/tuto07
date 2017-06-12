@@ -1,0 +1,31 @@
+---
+- hosts: local
+  connection: local
+  tasks:
+  - name: Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
+    apt:
+      name: nginx
+      state: latest
+    become: true
+
+  - name: make sure nginx is running
+    service:
+      name: nginx 
+      state: started
+    become: true
+
+  - name: Installation de git
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - git
+      - mc
+      - vim
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    become: true
+  - name: Installation docker
+    shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C07ADBF76221572C52609D
+      
+...

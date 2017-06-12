@@ -1,0 +1,40 @@
+---
+- hosts: default
+  tasks:
+  - name: Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
+    apt:
+      name: nginx
+      state: latest
+      update_cache: yes
+    become: true
+
+  - name: make sure nginx is running
+    service: 
+      name: nginx 
+      state: started
+    become: true
+
+  - name: Installation de git
+    apt: 
+      name: git
+      state: latest
+    become: true
+
+  - name: Installation de git-mc-vim-curl
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - git
+      - mc
+      - vim
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    become: true
+      
+#  - name: Installation de MC
+#    apt:
+#      name: mc
+#      become: true
+
+...
