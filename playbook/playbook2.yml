@@ -1,7 +1,8 @@
 ---
-- hosts: default
+- hosts: local
+  connection: local
   tasks:
-  - name: Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
+  - name: Playbook 2 - Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
     apt:
       name: nginx
       state: latest
@@ -15,9 +16,10 @@
     become: true
 
   - name: Installation de git
-    apt: 
+    apt:
       name: git
       state: latest
+      update_cache: yes
     become: true
 
   - name: Installation de git-mc-vim-curl
@@ -31,7 +33,21 @@
       - ca-certificates
       - curl
     become: true
-      
+
+#   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+# sudo apt-get update
+# sudo apt-get install ansible   
+# Add an apt key by id from a keyserver
+  - apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 93C4A3FD7BB9C367
+
+  - name: Installation d'ansible
+    apt:
+      name: ansible
+      state: latest
+    become: true
+  
 #  - name: Installation de MC
 #    apt:
 #      name: mc

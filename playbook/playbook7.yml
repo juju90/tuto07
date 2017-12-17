@@ -1,0 +1,134 @@
+---
+- hosts: default
+  tasks:
+  - name: Playbook 7 - Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
+    apt:
+      name: nginx
+      state: latest
+      update_cache: yes
+      cache_valid_time: 3600
+    become: true
+
+  - name: make sure nginx is stopped
+    service: 
+      name: nginx 
+#      state: started
+      state: stopped
+    become: true
+
+  - name: make sure cassandra is stopped
+    service: 
+      name: cassandra 
+#      state: started
+      state: stopped
+    become: true
+
+#  - name: Installation de git
+#    apt:
+#      name: git
+#      state: latest
+#      update_cache: yes
+#      cache_valid_time: 3600
+#    become: true
+
+#echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+#sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
+#sudo apt-get update
+#sudo apt-get install sbt
+# Add source repository into sources list.
+# 06/07/2017: erreur sur cette task
+#  - name: Ajout du repo pour sbt
+#    apt_repository:
+#      repo: deb-src https://dl.bintray.com/sbt/debian
+#      state: present
+#    become: true
+
+  - name: Installation de git-mc-vim-curl-mysql-phpmyadmin-scala
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - git
+      - mc
+      - vim
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - mysql-server
+      - phpmyadmin
+      - apache2
+      - scala
+      - sbt
+# pour installer gitlab
+      - openssh-server
+#      - postfix
+    become: true
+# pour phpmyadmin, ajouter Include /etc/phpmyadmin/apache.conf
+# à la fin du apache2.conf de /etc/apache
+# ajouter spark dans le path
+# export PATH = $PATH:/...
+# pour installer sbt
+
+  - name: Update the repository cache and update package "nginx" to latest version using default release squeeze-backport
+    apt:
+      name: openssh-server
+      state: latest
+    become: true
+
+  - name: make sure mysql is running
+    service: 
+      name: mysql
+      state: started
+    become: true
+
+  - name: make sure apache is running
+    service: 
+      name: apache2
+      state: started
+    become: true
+
+  - name: Download spark 2.1.1
+    get_url:
+      url: https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz
+      dest: /home/vagrant/spark-2.1.1-bin-hadoop2.7.tgz
+      mode: 0440
+
+  - name: Download spark 2.2.0
+    get_url:
+      url: https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz
+      dest: /home/vagrant/spark-2.2.0-bin-hadoop2.7.tgz
+      mode: 0440
+
+  - name: Download mysql Connector 5.1.42
+    get_url:
+      url: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.42.tar.gz
+      dest: /home/vagrant/mysql-connector-java-5.1.42.tar.gz
+      mode: 0777
+
+  - name: Download mysql Connector 5.1.44
+    get_url:
+      url: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz
+      dest: /home/vagrant/mysql-connector-java-5.1.44.tar.gz
+      mode: 0777
+
+# installation d'ansible si besoin
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+# sudo apt-get update
+# sudo apt-get install ansible   
+# Add an apt key by id from a keyserver
+# ne fonctionne pas : 
+#  - apt_key:
+#      keyserver: keyserver.ubuntu.com
+#      id: 93C4A3FD7BB9C367
+
+#  - name: Installation d'ansible
+#    apt:
+#      name: ansible
+#      state: latest
+#    become: true
+  
+#  - name: Installation de MC
+#    apt:
+#      name: mc
+#      become: true
+
+...

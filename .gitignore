@@ -1,1 +1,4 @@
-.vagrant
+./.vagrant/
+./src/project/
+./src/target/
+./vagrant.log
