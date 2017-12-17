@@ -3,3 +3,4 @@
 /src/target/
 /vagrant.log
 *.retry
+playbook.retry
