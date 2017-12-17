@@ -1,5 +1,5 @@
 .vagrant/
-./src/project/
-./src/target/
-./vagrant.log
-./*.retry
+/src/project/
+/src/target/
+/vagrant.log
+*.retry
